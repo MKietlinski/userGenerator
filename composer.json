@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/annotations": "^1.8",
+        "kkszymanowski/pesel": "^2.1",
         "symfony/console": "4.3.*",
         "symfony/dotenv": "4.3.*",
         "symfony/flex": "^1.3.1",
@@ -18,8 +19,9 @@
         "symfony/yaml": "4.3.*"
     },
     "require-dev": {
+        "fzaninotto/faker": "^1.8",
         "symfony/test-pack": "^1.0",
-        "fzaninotto/faker": "^1.8"
+        "symfony/var-dumper": "4.3.*"
     },
     "config": {
         "preferred-install": {

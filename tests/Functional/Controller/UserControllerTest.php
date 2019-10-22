@@ -20,7 +20,7 @@ class UserControllerTest extends AppTestCase
     {
         $data = [
             'email' => 'user@gmail.com',
-            'pesel' => '92050584315',
+            'pesel' => '90080517455',
             'firstName' => 'John',
             'lastName' => 'Doe',
             'programmingLanguages' => []
@@ -39,7 +39,7 @@ class UserControllerTest extends AppTestCase
 
         $data = [
             'email' => 'user@gmail.com',
-            'pesel' => '92050584315',
+            'pesel' => '90080517455',
             'firstName' => 'John',
             'lastName' => 'Doe',
             'programmingLanguages' => []
@@ -50,5 +50,22 @@ class UserControllerTest extends AppTestCase
 
         $this->assertStatusCode(200);
         $this->assertCount(1, $userRepository->findAll());
+    }
+
+    public function test_should_not_create_user_with_invalid_pesel(): void
+    {
+        $data = [
+            'email' => 'user@gmail.com',
+            'pesel' => '12345678901',
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+            'programmingLanguages' => []
+        ];
+
+        $this->client->request(Request::METHOD_POST, '/', ['user' => $data]);
+        $userRepository = $this->em->getRepository(User::class);
+
+        $this->assertStatusCode(200);
+        $this->assertCount(0, $userRepository->findAll());
     }
 }

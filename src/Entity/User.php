@@ -7,7 +7,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use App\Validator\Constraints as AcmeAssert;
 /**
  * @ORM\Entity
  * @UniqueEntity(fields={"email"})
@@ -35,6 +35,7 @@ class User
 
     /**
      * @Assert\NotBlank
+     * @AcmeAssert\ValidPesel
      * @ORM\Column(type="string", length=11)
      */
     private $pesel;
