@@ -68,4 +68,21 @@ class UserControllerTest extends AppTestCase
         $this->assertStatusCode(200);
         $this->assertCount(0, $userRepository->findAll());
     }
+
+    public function test_should_set_user_active_when_is_adult(): void
+    {
+        $data = [
+            'email' => 'user@gmail.com',
+            'pesel' => '90080517455',
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+            'programmingLanguages' => []
+        ];
+
+        $this->client->request(Request::METHOD_POST, '/', ['user' => $data]);
+        $user = $this->em->getRepository(User::class)->findAll()[0];
+
+        $this->assertStatusCode(200);
+        $this->assertTrue($user->isActive());
+    }
 }

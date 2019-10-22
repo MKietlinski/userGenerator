@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pesel\Pesel;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as AcmeAssert;
@@ -14,6 +15,8 @@ use App\Validator\Constraints as AcmeAssert;
  */
 class User
 {
+    public const ADULT_AGE = 18;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -115,5 +118,17 @@ class User
     public function setProgrammingLanguages(array $programmingLanguages): void
     {
         $this->programmingLanguages = $programmingLanguages;
+    }
+
+    public function isAdult(): bool
+    {
+        if (!$this->pesel) {
+            return false;
+        }
+
+        $birthDate = (new Pesel($this->pesel))->getBirthDate();
+        $age = (new \DateTime())->diff($birthDate)->y;
+
+        return $age >= self::ADULT_AGE;
     }
 }
