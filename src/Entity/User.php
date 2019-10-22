@@ -9,8 +9,9 @@ use Pesel\Pesel;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as AcmeAssert;
+
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(fields={"email"})
  */
 class User
@@ -57,6 +58,7 @@ class User
 
     /**
      * @ORM\Column(type="array")
+     * @AcmeAssert\ProgrammingLanguagesAreNotOccupied
      */
     private $programmingLanguages = [];
 

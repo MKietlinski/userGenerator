@@ -95,10 +95,10 @@ class UserControllerTest extends AppTestCase
             'pesel' => '90080517455',
             'firstName' => 'John',
             'lastName' => 'Doe',
-            'programmingLanguages' => []
+            'programmingLanguages' => ['php']
         ];
 
-        $res = $this->client->request(Request::METHOD_POST, '/api', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode($data));
+        $this->client->request(Request::METHOD_POST, '/api', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode($data));
         $userRepository = $this->em->getRepository(User::class);
 
         $this->assertStatusCode(200);
@@ -120,5 +120,24 @@ class UserControllerTest extends AppTestCase
 
         $this->assertStatusCode(400);
         $this->assertCount(0, $userRepository->findAll());
+    }
+
+    public function test_should_not_create_user_when_programming_language_is_occupied(): void
+    {
+        UserFactory::create(['programmingLanguages' => ['php']], $this->em);
+
+        $data = [
+            'email' => 'user@gmail.com',
+            'pesel' => '90080517455',
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+            'programmingLanguages' => ['php']
+        ];
+
+        $this->client->request(Request::METHOD_POST, '/api', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode($data));
+        $userRepository = $this->em->getRepository(User::class);
+
+        $this->assertStatusCode(400);
+        $this->assertCount(1, $userRepository->findAll());
     }
 }

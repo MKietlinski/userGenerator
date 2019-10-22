@@ -20,6 +20,7 @@ class UserFactory
         $user->setPesel($options['pesel']);
         $user->setFirstName($options['firstName']);
         $user->setLastName($options['lastName']);
+        $user->setProgrammingLanguages($options['programmingLanguages']);
 
         self::persist($user, $entityManager);
         return $user;
@@ -41,6 +42,7 @@ class UserFactory
             ->setDefault('lastName', function (Options $options) use ($faker): string {
                 return $faker->lastName;
             })
+            ->setDefault('programmingLanguages', [])
         ;
 
         return $optionsResolver->resolve($options);
