@@ -87,4 +87,38 @@ class UserControllerTest extends AppTestCase
         $this->assertTrue($user->isActive());
         $this->assertSentEmails(1);
     }
+
+    public function test_should_create_user_on_valid_api_request(): void
+    {
+        $data = [
+            'email' => 'user@gmail.com',
+            'pesel' => '90080517455',
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+            'programmingLanguages' => []
+        ];
+
+        $res = $this->client->request(Request::METHOD_POST, '/api', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode($data));
+        $userRepository = $this->em->getRepository(User::class);
+
+        $this->assertStatusCode(200);
+        $this->assertCount(1, $userRepository->findAll());
+    }
+
+    public function test_should_not_create_user_on_invalid_api_request(): void
+    {
+        $data = [
+            'email' => 'usergmail.com',
+            'pesel' => '12345',
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+            'programmingLanguages' => []
+        ];
+
+        $this->client->request(Request::METHOD_POST, '/api', [], [], ['CONTENT_TYPE' => 'application/json'], json_encode($data));
+        $userRepository = $this->em->getRepository(User::class);
+
+        $this->assertStatusCode(400);
+        $this->assertCount(0, $userRepository->findAll());
+    }
 }
