@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Create User</title>
+    </head>
+    <body>
+        {% include 'flashes.html.twig' %}
+
+        {{ form_start(form) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.pesel) }}
+            {{ form_row(form.firstName) }}
+            {{ form_row(form.lastName) }}
+            {{ form_row(form.programmingLanguages) }}
+            <button type="submit">Create</button>
+        {{ form_end(form) }}
+    </body>
+</html>
