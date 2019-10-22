@@ -69,7 +69,7 @@ class UserControllerTest extends AppTestCase
         $this->assertCount(0, $userRepository->findAll());
     }
 
-    public function test_should_set_user_active_when_is_adult(): void
+    public function test_should_set_user_active_when_is_adult_and_send_welcome_email(): void
     {
         $data = [
             'email' => 'user@gmail.com',
@@ -79,10 +79,12 @@ class UserControllerTest extends AppTestCase
             'programmingLanguages' => []
         ];
 
+        $this->client->enableProfiler();
         $this->client->request(Request::METHOD_POST, '/', ['user' => $data]);
         $user = $this->em->getRepository(User::class)->findAll()[0];
 
         $this->assertStatusCode(200);
         $this->assertTrue($user->isActive());
+        $this->assertSentEmails(1);
     }
 }
